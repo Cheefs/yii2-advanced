@@ -1,0 +1,65 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `tasks`.
+ */
+class m200110_130713_create_tasks_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->createTable('tasks', [
+            'id' => $this->primaryKey(),
+            'title' => $this->string()->notNull()->comment('название задачи'),
+            'execute_user_id' => $this->integer()->comment('указатель на исполнителя задачи'),
+            'board_id' => $this->integer()->comment('указатель на доску'),
+            'type' => "ENUM('task', 'error', 'epic', 'subtask') 
+                comment 'перечисление типов задач (сделал аналогично как jira)' not null default 'task'
+            ",
+            'status' => "ENUM('new', 'active', 'in_work', 'canceled', 'completed') 
+                comment 'перечисление статусов задач' not null default 'new'
+            ",
+            'create_user_id' => $this->integer()->notNull()->comment('указатель на пользователя создашего задачу'),
+            'crate_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
+            'update_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
+        ]);
+        /** внешний ключь указывающий на испонителя задачи */
+        $this->addForeignKey(
+            'fk-tasks-execute_user_id',
+            'tasks',
+            'execute_user_id',
+            'users',
+            'id'
+        );
+        /** внешний ключь указывающий на доску */
+        $this->addForeignKey(
+            'fk-tasks-board_id',
+            'tasks',
+            'board_id',
+            'boards',
+            'id'
+        );
+        /** внешний ключь указывающий на создателя задачи */
+        $this->addForeignKey(
+            'fk-tasks-create_user_id',
+            'tasks',
+            'create_user_id',
+            'users',
+            'id'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown() {
+        $this->dropForeignKey('fk-tasks-execute_user_id', 'tasks');
+        $this->dropForeignKey('fk-tasks-board_id', 'tasks');
+        $this->dropForeignKey('fk-tasks-create_user_id', 'tasks');
+        $this->dropTable('tasks');
+    }
+}

@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\Users;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -28,7 +29,6 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
-                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -60,7 +60,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if ( Yii::$app->user->can(Users::ADMIN )) {
+            return $this->render('index');
+        }
+        Yii::$app->user->logout();
+        return $this->redirect('site/login');
     }
 
     /**
