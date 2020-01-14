@@ -1,11 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: evg
- * Date: 13/01/2020
- * Time: 19:32
- */
 namespace console\components;
+
 use frontend\models\ChatLog;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
