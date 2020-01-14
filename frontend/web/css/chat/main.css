@@ -1,0 +1,12 @@
+.chat__container {
+    width: 500px;
+}
+
+.chat__container .chat__window .panel-body {
+    height: 400px;
+    overflow: auto;
+}
+
+.bg_muted {
+    background-color: #d2d6de;
+}

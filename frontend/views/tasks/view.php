@@ -1,10 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-
+/* @var $user \common\models\User */
 /* @var $this yii\web\View */
 /* @var $model common\models\Tasks */
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
@@ -40,5 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'update_datetime',
         ],
     ]) ?>
+
+    <?= $this->render('/chat/index', [ 'user' => $user ]) ?>
 
 </div>

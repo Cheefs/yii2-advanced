@@ -53,6 +53,7 @@ class TasksController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
+            'user' => Yii::$app->user->identity,
             'model' => $this->findModel($id),
         ]);
     }

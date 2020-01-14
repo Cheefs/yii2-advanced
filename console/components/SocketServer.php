@@ -1,15 +1,17 @@
 <?php
+
 namespace console\components;
 
 use frontend\models\ChatLog;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+
 class SocketServer implements MessageComponentInterface
 {
     protected $clients;
     public function __construct()
     {
-        $this->clients = new \SplObjectStorage; // Для хранения технической информации об присоединившихся клиентах используется технология SplObjectStorage, встроенная в PHP
+        $this->clients = new \SplObjectStorage;
     }
     public function onOpen(ConnectionInterface $conn)
     {
@@ -23,15 +25,16 @@ class SocketServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $from, $msg)
     {
-        var_dump($msg);
         $msgArray = json_decode($msg, true);
-        ChatLog::create($msgArray);
-        if ($msgArray['type'] === ChatLog::SHOW_HISTORY) {
-            $this->showHistory($from);
-        } else {
+
+        if ( $msgArray['type'] === ChatLog::SEND_MESSAGE) {
+            ChatLog::create($msgArray);
+
             foreach ($this->clients as $client) {
                 $client->send($msg);
             }
+        } else {
+            $this->showHistory($from);
         }
     }
     private function showHistory(ConnectionInterface $conn)

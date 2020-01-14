@@ -11,11 +11,15 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_at
  * @property int|null $updated_at
  * @property string|null $message
+ * @property int $type
  */
 class ChatLog extends \yii\db\ActiveRecord
 {
+
     const SHOW_HISTORY = 1;
     const SEND_MESSAGE = 2;
+
+    public $type = self::SHOW_HISTORY;
     /**
      * {@inheritdoc}
      */
@@ -30,7 +34,7 @@ class ChatLog extends \yii\db\ActiveRecord
     {
         return [
             [['created_at', 'updated_at'], 'integer'],
-            [['username'], 'required'],
+            [['username', 'type'], 'required'],
             [['message'], 'string'],
             [['username'], 'string', 'max' => 255],
         ];
@@ -58,13 +62,13 @@ class ChatLog extends \yii\db\ActiveRecord
      */
     public static function create(array $data)
     {
-//        try {
+        try {
             $model = new self(['username' => $data['username'], 'message' => $data['message']]);
             return $model->save();
-//        } catch (\Throwable $throwable) {
-//            Yii::error($throwable->getTraceAsString());
-//            Yii::error(json_encode($data));
-//        }
-//        return false;
+        } catch (\Throwable $throwable) {
+            Yii::error($throwable->getTraceAsString());
+            Yii::error(json_encode($data));
+        }
+        return false;
     }
 }
