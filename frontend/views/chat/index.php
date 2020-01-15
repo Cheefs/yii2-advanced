@@ -19,7 +19,6 @@
          </div>
     </div>
 
-    <?php if ( $user ) {
-        echo \yii\helpers\Html::hiddenInput('username', $user->username, ['class' => 'username']);
-    } ?>
+    <?= \yii\helpers\Html::hiddenInput('username', $user->username ?? null, ['class' => 'username']); ?>
+    <?= \yii\helpers\Html::hiddenInput('task_id', $task->id ?? null, ['class' => 'task_id']); ?>
 </div>

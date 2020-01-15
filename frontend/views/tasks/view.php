@@ -42,6 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?= $this->render('/chat/index', [ 'user' => $user ]) ?>
+    <?= $this->render('/chat/index', [ 'user' => $user, 'task' => $model ]) ?>
 
 </div>

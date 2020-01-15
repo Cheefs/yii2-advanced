@@ -63,7 +63,7 @@ class ChatLog extends \yii\db\ActiveRecord
     public static function create(array $data)
     {
         try {
-            $model = new self(['username' => $data['username'], 'message' => $data['message']]);
+            $model = new self($data);
             return $model->save();
         } catch (\Throwable $throwable) {
             Yii::error($throwable->getTraceAsString());

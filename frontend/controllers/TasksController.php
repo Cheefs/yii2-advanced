@@ -2,9 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Boards;
+use common\models\User;
 use Yii;
 use common\models\Tasks;
 use common\models\search\TaskSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -66,6 +69,8 @@ class TasksController extends Controller
     public function actionCreate()
     {
         $model = new Tasks();
+        $boardsList = Boards::find()->all();
+        $users = User::findAll([ 'status' => User::STATUS_ACTIVE ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -73,6 +78,8 @@ class TasksController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'users' => ArrayHelper::map($users, 'id', 'username'),
+            'boardsList' => ArrayHelper::map($boardsList, 'id', 'name')
         ]);
     }
 
@@ -86,6 +93,8 @@ class TasksController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $boardsList = Boards::find()->all();
+        $users = User::findAll([ 'status' => User::STATUS_ACTIVE ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -93,6 +102,8 @@ class TasksController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'users' => ArrayHelper::map($users, 'id', 'username'),
+            'boardsList' => ArrayHelper::map($boardsList, 'id', 'name')
         ]);
     }
 

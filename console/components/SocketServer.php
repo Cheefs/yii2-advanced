@@ -5,10 +5,12 @@ namespace console\components;
 use frontend\models\ChatLog;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use yii\helpers\Json;
 
 class SocketServer implements MessageComponentInterface
 {
     protected $clients;
+
     public function __construct()
     {
         $this->clients = new \SplObjectStorage;
@@ -34,17 +36,19 @@ class SocketServer implements MessageComponentInterface
                 $client->send($msg);
             }
         } else {
-            $this->showHistory($from);
+            $this->showHistory($from, $msgArray);
         }
     }
-    private function showHistory(ConnectionInterface $conn)
+    private function showHistory(ConnectionInterface $conn, $msg = null )
     {
-        $chatLogsQuery = ChatLog::find()->orderBy('created_at ASC');
+        $chatLogsQuery = ChatLog::find()
+            ->where(['task_id' => $msg['taskId'] ])
+            ->orderBy('created_at ASC');
         foreach ($chatLogsQuery->each() as $chatLog) {
             /**
              * @var ChatLog $chatLog
              */
-            $this->sendMessage($conn, ['message'=>$chatLog->message, 'username'=>$chatLog->username]);
+            $this->sendMessage( $conn, ['message' => $chatLog->message, 'username' => $chatLog->username]);
         }
     }
     /**
