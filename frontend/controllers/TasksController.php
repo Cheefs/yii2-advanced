@@ -2,8 +2,6 @@
 
 namespace frontend\controllers;
 
-use common\models\Boards;
-use common\models\User;
 use Yii;
 use common\models\Tasks;
 use common\models\search\TaskSearch;
@@ -11,6 +9,9 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Boards;
+use common\models\User;
+use frontend\models\forms\TaskForm;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
@@ -68,11 +69,14 @@ class TasksController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Tasks();
+        $model = new TaskForm();
         $boardsList = Boards::find()->all();
         $users = User::findAll([ 'status' => User::STATUS_ACTIVE ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ( $model->load(Yii::$app->request->post()) && $model->save()) {
+            if ( $model->asTemplate ) {
+                return $this->redirect(['index']);
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -130,7 +134,7 @@ class TasksController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Tasks::findOne($id)) !== null) {
+        if (($model = TaskForm::findOne($id)) !== null) {
             return $model;
         }
 

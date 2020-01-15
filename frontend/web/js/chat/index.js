@@ -16,33 +16,6 @@ const taskId = $currentTaskDomNode ? $currentTaskDomNode.value : null;
 /** скроллинг окна чата */
 const scrollChatToBottom = () => document.querySelector('.chat__body').scrollTop = $chatNode.offsetTop;
 
-if ( !currentUser ) {
-   $btnSend = document.querySelector('#btn-send-message');
-   $chatWindow = document.querySelector('.chat__window .chat__body');
-   $chatWindow.innerHTML = 'You Must Login First';
-   $chatWindow.classList.add('bg_muted');
-
-   [ $btnSend, $messageInput ].forEach( el => el.disabled = true );
-}
-
-chat.onopen = (event) => {
-    console.log("Connection established!");
-    chat.send( JSON.stringify({ taskId, 'username': currentUser, 'type': SHOW_HISTORY } ) );
-};
-
-chat.onmessage = ({ data }) => {
-    const { username, message } = JSON.parse( data );
-    const className = username === currentUser ? 'text_left' :'text_right';
-    const $chatItem = document.createElement('div');
-
-    $responseNode.textContent = '';
-    $chatItem.innerHTML = `<div class="${ className }"><b>${ username }</b>:&nbsp;${ message }</div>`;
-    $chatNode.appendChild( $chatItem );
-    $chatNode.scrollBottom =  $chatNode.offsetHeight;
-
-    scrollChatToBottom();
-};
-
 /** функция отправки сообщений */
 const senMessage = () => {
     const message = $messageInput ? $messageInput.value : null;
@@ -52,10 +25,39 @@ const senMessage = () => {
     scrollChatToBottom();
 };
 
-/** события нажатия на ENTER для удобства
- * Нижеследующий код отправляет сообщение только когда переменная\условие перед вызовом функции === true
- * ( т.е. выполняется блок после логического И только в этом случае, это специфика js костыля тут нет, как может показатся....  )
- **/
-document.addEventListener('keypress', ({ keyCode }) => (keyCode === KEY_CODE_ENTER) && senMessage());
-/** добавление события нажатия на кнопку отправки сообщения, предварительно убедившись что эта кнопка была найдена */
-$sendMessageButton && $sendMessageButton.addEventListener('click', senMessage );
+if ( $chatNode )  {
+    if ( !currentUser ) {
+        $btnSend = document.querySelector('#btn-send-message');
+        $chatWindow = document.querySelector('.chat__window .chat__body');
+        $chatWindow.innerHTML = 'You Must Login First';
+        $chatWindow.classList.add('bg_muted');
+
+        [ $btnSend, $messageInput ].forEach( el => el.disabled = true );
+    }
+
+    chat.onopen = (event) => {
+        console.log("Connection established!");
+        chat.send( JSON.stringify({ taskId, 'username': currentUser, 'type': SHOW_HISTORY } ) );
+    };
+
+    chat.onmessage = ({ data }) => {
+        const { username, message } = JSON.parse( data );
+        const className = username === currentUser ? 'text_left' :'text_right';
+        const $chatItem = document.createElement('div');
+
+        $responseNode.textContent = '';
+        $chatItem.innerHTML = `<div class="${ className }"><b>${ username }</b>:&nbsp;${ message }</div>`;
+        $chatNode.appendChild( $chatItem );
+        $chatNode.scrollBottom =  $chatNode.offsetHeight;
+
+        scrollChatToBottom();
+    };
+    
+    /** события нажатия на ENTER для удобства
+     * Нижеследующий код отправляет сообщение только когда переменная\условие перед вызовом функции === true
+     * ( т.е. выполняется блок после логического И только в этом случае, это специфика js костыля тут нет, как может показатся....  )
+     **/
+    document.addEventListener('keypress', ({ keyCode }) => (keyCode === KEY_CODE_ENTER) && senMessage());
+    /** добавление события нажатия на кнопку отправки сообщения, предварительно убедившись что эта кнопка была найдена */
+    $sendMessageButton && $sendMessageButton.addEventListener('click', senMessage );
+}

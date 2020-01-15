@@ -25,6 +25,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->dropDownList([ 'new' => 'New', 'active' => 'Active', 'in_work' => 'In work', 'canceled' => 'Canceled', 'completed' => 'Completed', ], ['prompt' => '']) ?>
 
+    <?php if ( !$model->id ): ?>
+       <?= $form->field($model, 'asTemplate')->checkbox() ?>
+    <?php endif; ?>
+
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
