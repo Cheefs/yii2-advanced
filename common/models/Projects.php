@@ -11,8 +11,8 @@ use Yii;
  * @property string $name название проетка
  * @property int|null $parent_id указатель на родительский проект
  * @property int $create_user_id указатель на пользователя создашего доску
- * @property string|null $crate_datetime
- * @property string|null $update_datetime
+ * @property string|null $create_at
+ * @property string|null $update_at
  *
  * @property Users $createUser
  * @property Projects $parent
@@ -35,9 +35,8 @@ class Projects extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'create_user_id'], 'required'],
-            [['parent_id', 'create_user_id'], 'integer'],
-            [['crate_datetime', 'update_datetime'], 'safe'],
+            [['name'], 'required'],
+            [['parent_id', 'create_user_id', 'create_at', 'update_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['create_user_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['parent_id' => 'id']],
@@ -54,8 +53,8 @@ class Projects extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'parent_id' => Yii::t('app', 'Parent ID'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
-            'crate_datetime' => Yii::t('app', 'Crate Datetime'),
-            'update_datetime' => Yii::t('app', 'Update Datetime'),
+            'create_at' => Yii::t('app', 'Create At'),
+            'update_at' => Yii::t('app', 'Update At'),
         ];
     }
 

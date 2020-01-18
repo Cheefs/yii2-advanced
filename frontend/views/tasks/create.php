@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Tasks */
 /* @var $projectsList common\models\Projects[]  */
 /* @var $usersList common\models\User[] */
+/* @var $priorityList common\models\Priority[] */
 
 $this->title = Yii::t('app', 'Create Tasks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
@@ -18,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'projectsList' => $projectsList,
-        'usersList' => $usersList
+        'usersList' => $usersList,
+        'priorityList' => $priorityList,
     ]) ?>
 
 </div>

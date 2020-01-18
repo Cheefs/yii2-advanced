@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $projectsList common\models\Projects[]  */
 /* @var $usersList common\models\User[] */
-/* @var $prioritysList common\models\User[] */
+/* @var $priorityList common\models\User[] */
 
 ?>
 
@@ -18,17 +18,22 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'execute_user_id')->dropDownList( $usersList ?? [] )->label('executor') ?>
+    <?= $form->field($model, 'execute_user_id')
+        ->dropDownList( $usersList ?? [], ['prompt' => Yii::t('app', '')] )
+        ->label('executor')
+    ?>
 
-    <?= $form->field($model, 'is_template')->checkbox()->label( Yii::t('app', 'is template') .'?' ) ?>
+    <?= $form->field($model, 'is_template')->checkbox()->label( false ) ?>
 
-    <?= $form->field($model, 'project_id')->dropDownList( $projectsList ?? [] )->label('project') ?>
+    <?= $form->field($model, 'project_id')->dropDownList(
+            $projectsList ?? [], ['prompt' => Yii::t('app', '')]
+    )->label('project') ?>
 
     <?= $form->field($model, 'type')->dropDownList([
             'task' => 'Task', 'error' => 'Error', 'epic' => 'Epic', 'subtask' => 'Subtask'
-    ], ['prompt' => 'Task']) ?>
+    ]) ?>
 
-    <?= $form->field($model, 'priority_id')->dropDownList( $prioritysList ?? [] )->label('priority') ?>
+    <?= $form->field($model, 'priority_id')->dropDownList( $priorityList ?? [] )->label('priority') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

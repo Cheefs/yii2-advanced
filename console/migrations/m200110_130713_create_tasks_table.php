@@ -24,9 +24,9 @@ class m200110_130713_create_tasks_table extends Migration
             'status' => "ENUM('new', 'active', 'in_work', 'canceled', 'completed') 
                 comment 'перечисление статусов задач' not null default 'new'
             ",
-            'create_user_id' => $this->integer()->notNull()->comment('указатель на пользователя создашего задачу'),
-            'crate_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
-            'update_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
+            'create_user_id' => $this->integer()->comment('указатель на пользователя создашего задачу'),
+            'created_at' => $this->bigInteger()->comment('дата создания сообщения'),
+            'updated_at' => $this->bigInteger()->comment('дата изменения сообщения'),
         ]);
         /** внешний ключь указывающий на испонителя задачи */
         $this->addForeignKey(

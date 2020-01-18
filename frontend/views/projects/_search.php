@@ -26,9 +26,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'create_user_id') ?>
 
-    <?= $form->field($model, 'crate_datetime') ?>
+    <?= $form->field($model, 'create_at') ?>
 
-    <?php // echo $form->field($model, 'update_datetime') ?>
+    <?php // echo $form->field($model, 'update_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

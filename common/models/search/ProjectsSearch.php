@@ -18,7 +18,7 @@ class ProjectsSearch extends Projects
     {
         return [
             [['id', 'parent_id', 'create_user_id'], 'integer'],
-            [['name', 'crate_datetime', 'update_datetime'], 'safe'],
+            [['name', 'create_at', 'update_at'], 'safe'],
         ];
     }
 
@@ -61,8 +61,8 @@ class ProjectsSearch extends Projects
             'id' => $this->id,
             'parent_id' => $this->parent_id,
             'create_user_id' => $this->create_user_id,
-            'crate_datetime' => $this->crate_datetime,
-            'update_datetime' => $this->update_datetime,
+            'crate_datetime' => $this->create_at,
+            'update_datetime' => $this->update_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

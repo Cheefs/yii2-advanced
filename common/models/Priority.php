@@ -16,6 +16,9 @@ use Yii;
  */
 class Priority extends \yii\db\ActiveRecord
 {
+    const TYPE_PROJECT = 0;
+    const TYPE_TASK = 1;
+
     /**
      * {@inheritdoc}
      */

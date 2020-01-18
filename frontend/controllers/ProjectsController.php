@@ -2,9 +2,14 @@
 
 namespace frontend\controllers;
 
+
+use common\models\User;
 use Yii;
 use common\models\Projects;
 use common\models\search\ProjectsSearch;
+use common\models\search\TaskSearch;
+use frontend\models\forms\ProjectsForm;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -53,6 +58,7 @@ class ProjectsController extends BaseController
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'tasksDataProvider' => (new TaskSearch())->search(['project_id' => $id, 'is_template' => false ]),
         ]);
     }
 
@@ -63,14 +69,19 @@ class ProjectsController extends BaseController
      */
     public function actionCreate()
     {
-        $model = new Projects();
+        $model = new ProjectsForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->all();
+
         return $this->render('create', [
             'model' => $model,
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
         ]);
     }
 
@@ -84,6 +95,8 @@ class ProjectsController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->where(['<>', 'id', $id ])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -91,6 +104,8 @@ class ProjectsController extends BaseController
 
         return $this->render('update', [
             'model' => $model,
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
         ]);
     }
 
@@ -100,6 +115,8 @@ class ProjectsController extends BaseController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -112,12 +129,12 @@ class ProjectsController extends BaseController
      * Finds the Projects model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Projects the loaded model
+     * @return ProjectsForm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Projects::findOne($id)) !== null) {
+        if (($model = ProjectsForm::findOne($id)) !== null) {
             return $model;
         }
 

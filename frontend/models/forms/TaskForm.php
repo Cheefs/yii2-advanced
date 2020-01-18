@@ -6,6 +6,7 @@ use common\models\Tasks;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 class TaskForm extends Tasks
 {
@@ -18,8 +19,8 @@ class TaskForm extends Tasks
             [
                 'class' => TimestampBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
-                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'create_at',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'update_at',
                 ],
                 'value' => time()
             ],
@@ -38,5 +39,17 @@ class TaskForm extends Tasks
                 'value' => self::STATUS_NEW
             ],
         ];
+    }
+
+    public function rules()
+    {
+        $rules = [
+            ['project_id', 'required',
+                'when' => function( $model ) {
+                    return !(boolean)$model->is_template;
+                }, 'whenClient' => '() => !document.querySelector( \'#taskform-project_id\').value;'
+            ]
+        ];
+        return ArrayHelper::merge( parent::rules(), $rules );
     }
 }

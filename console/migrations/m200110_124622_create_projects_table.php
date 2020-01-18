@@ -15,9 +15,9 @@ class m200110_124622_create_projects_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull()->comment('название проетка'),
             'parent_id' => $this->integer()->comment('указатель на родительский проект'),
-            'create_user_id' => $this->integer()->notNull()->comment('указатель на пользователя создашего доску'),
-            'crate_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
-            'update_datetime' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
+            'create_user_id' => $this->integer()->comment('указатель на пользователя создашего доску'),
+            'create_at' => $this->bigInteger(),
+            'update_at' => $this->bigInteger(),
         ]);
         /** внешний ключь указывающий на создателя проекта */
         $this->addForeignKey(

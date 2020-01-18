@@ -16,8 +16,8 @@ use Yii;
  * @property string $type перечисление типов задач (сделал аналогично как jira)
  * @property string $status перечисление статусов задач
  * @property int $create_user_id указатель на пользователя создашего задачу
- * @property string|null $crate_datetime
- * @property string|null $update_datetime
+ * @property integer $create_at
+ * @property integer $update_at
  * @property int $priority_id указатель на приоритет задачи
  *
  * @property ChatLog[] $chatLogs
@@ -42,15 +42,14 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'create_user_id', 'priority_id', 'project_id' ], 'required'],
-            [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id'], 'integer'],
+            [['title', 'priority_id' ], 'required'],
+            [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'create_at', 'update_at'], 'integer'],
             [['type', 'status'], 'string'],
-            [['crate_datetime', 'update_datetime'], 'safe'],
             [['title'], 'string', 'max' => 255],
-            [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['create_user_id' => 'id']],
-            [['execute_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['execute_user_id' => 'id']],
-            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => Priority::className(), 'targetAttribute' => ['priority_id' => 'id']],
-            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
+            [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['create_user_id' => 'id']],
+            [['execute_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['execute_user_id' => 'id']],
+            [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => Priority::class, 'targetAttribute' => ['priority_id' => 'id']],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::class, 'targetAttribute' => ['project_id' => 'id']],
         ];
     }
 
@@ -68,8 +67,8 @@ class Tasks extends \yii\db\ActiveRecord
             'type' => Yii::t('app', 'Type'),
             'status' => Yii::t('app', 'Status'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
-            'crate_datetime' => Yii::t('app', 'Crate Datetime'),
-            'update_datetime' => Yii::t('app', 'Update Datetime'),
+            'create_at' => Yii::t('app', 'Create At'),
+            'update_at' => Yii::t('app', 'Update At'),
             'priority_id' => Yii::t('app', 'Priority ID'),
         ];
     }
@@ -79,7 +78,7 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getChatLogs()
     {
-        return $this->hasMany(ChatLog::className(), ['task_id' => 'id']);
+        return $this->hasMany(ChatLog::class, ['task_id' => 'id']);
     }
 
     /**
@@ -87,7 +86,7 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getCreateUser()
     {
-        return $this->hasOne(Users::className(), ['id' => 'create_user_id']);
+        return $this->hasOne(Users::class, ['id' => 'create_user_id']);
     }
 
     /**
@@ -95,7 +94,7 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getExecuteUser()
     {
-        return $this->hasOne(Users::className(), ['id' => 'execute_user_id']);
+        return $this->hasOne(Users::class, ['id' => 'execute_user_id']);
     }
 
     /**
@@ -103,7 +102,7 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getPriority()
     {
-        return $this->hasOne(Priority::className(), ['id' => 'priority_id']);
+        return $this->hasOne(Priority::class, ['id' => 'priority_id']);
     }
 
     /**
@@ -111,6 +110,6 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getProject()
     {
-        return $this->hasOne(Projects::className(), ['id' => 'project_id']);
+        return $this->hasOne(Projects::class, ['id' => 'project_id']);
     }
 }

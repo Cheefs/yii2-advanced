@@ -29,10 +29,40 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'parent_id',
-            'create_user_id',
-            'crate_datetime',
-            //'update_datetime',
+            [
+                'format' => 'raw',
+                'label' => Yii::t('app', 'parent project'),
+                'attribute' => 'parent_id',
+                'value' => function( $model ) {
+                    /** @var $model common\models\Projects */
+                    $parent = $model->parent;
+                    return $parent ? Html::a($parent->name, ['/projects/view', 'id' => $parent->id]) : null ;
+                }
+            ],
+            [
+                'label' => ucfirst( Yii::t('app', 'creator') ),
+                'attribute' => 'create_user_id',
+                'value' => function( $model ) {
+                    /** @var $model common\models\Projects */
+                    return $model->createUser->username;
+                }
+            ],
+            [
+                'format' => 'raw',
+                'attribute' => 'create_at',
+                'value' => function( $model ) {
+                    /** @var $model common\models\Projects */
+                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                }
+            ],
+            [
+                'format' => 'raw',
+                'attribute' => 'update_at',
+                'value' => function( $model ) {
+                    /** @var $model common\models\Projects */
+                    return Yii::$app->formatter->asDatetime( $model->update_at );
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
