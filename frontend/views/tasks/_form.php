@@ -88,14 +88,14 @@ $templatesDropDown[ -1 ] = Yii::t('app','dont use');
      * @param template object
      **/
     const setTask = ( template ) => {
+        if (!template) return;
         const { type, priority_id, project_id, execute_user_id, title } = template;
-        if ( template ) {
-            $taskTypeNode.value = type;
-            $taskPriorityNode.value = priority_id;
-            $taskProjectNode.value = project_id;
-            $taskExecutorNode.value = execute_user_id;
-            $taskTitleNode.value = title;
-        }
+
+        $taskTypeNode.value = type;
+        $taskPriorityNode.value = priority_id;
+        $taskProjectNode.value = project_id;
+        $taskExecutorNode.value = execute_user_id;
+        $taskTitleNode.value = title;
     };
 
     /** слушаем все клики по документу */
