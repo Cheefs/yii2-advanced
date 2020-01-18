@@ -95,7 +95,6 @@ class ProjectsController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $usersList = User::find()->all();
         $projectsList = Projects::find()->where(['<>', 'id', $id ])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -105,7 +104,6 @@ class ProjectsController extends BaseController
         return $this->render('update', [
             'model' => $model,
             'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
-            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
         ]);
     }
 

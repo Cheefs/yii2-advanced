@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 use common\models\Priority;
 use common\models\Projects;
+use common\models\Tasks;
 use common\models\User;
 use Yii;
 use common\models\search\TaskSearch;
@@ -79,9 +80,11 @@ class TasksController extends BaseController
         $usersList = User::find()->all();
         $projectsList = Projects::find()->all();
         $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
+        $templatesList = Tasks::findAll(['is_template' => true ]);
 
         return $this->render('create', [
             'model' => $model,
+            'templatesList' => $templatesList,
             'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
             'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
             'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
@@ -104,9 +107,13 @@ class TasksController extends BaseController
         }
         $usersList = User::find()->all();
         $projectsList = Projects::find()->all();
+        $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
+        $templatesList = Tasks::findAll(['is_template' => true ]);
 
         return $this->render('update', [
             'model' => $model,
+            'templatesList' => $templatesList,
+            'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
             'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
             'usersList' => ArrayHelper::map($usersList, 'id', 'username')
         ]);

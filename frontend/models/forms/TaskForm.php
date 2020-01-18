@@ -47,7 +47,8 @@ class TaskForm extends Tasks
             ['project_id', 'required',
                 'when' => function( $model ) {
                     return !(boolean)$model->is_template;
-                }, 'whenClient' => '() => !document.querySelector( \'#taskform-project_id\').value;'
+                    /** исправил написание, YII намешал своего присылая данные формы, нужно чистить */
+                }, 'whenClient' => '() => document.querySelector( \'#taskform-project_id\').value.trim()'
             ]
         ];
         return ArrayHelper::merge( parent::rules(), $rules );
