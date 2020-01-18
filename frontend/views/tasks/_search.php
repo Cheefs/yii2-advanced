@@ -13,6 +13,9 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1
+        ],
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
@@ -21,9 +24,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'execute_user_id') ?>
 
-    <?= $form->field($model, 'board_id') ?>
+    <?= $form->field($model, 'is_template') ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'project_id') ?>
+
+    <?php // echo $form->field($model, 'type') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
@@ -32,6 +37,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'crate_datetime') ?>
 
     <?php // echo $form->field($model, 'update_datetime') ?>
+
+    <?php // echo $form->field($model, 'priority_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Boards */
+/* @var $model common\models\Projects */
 
-$this->title = Yii::t('app', 'Create Board Form');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Boards'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Projects');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="boards-create">
+<div class="projects-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

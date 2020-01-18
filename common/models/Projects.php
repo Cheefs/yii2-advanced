@@ -5,25 +5,28 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "boards".
+ * This is the model class for table "projects".
  *
  * @property int $id
- * @property string $name название доски для задач ( как название проектов в jira )
+ * @property string $name название проетка
+ * @property int|null $parent_id указатель на родительский проект
  * @property int $create_user_id указатель на пользователя создашего доску
  * @property string|null $crate_datetime
  * @property string|null $update_datetime
  *
  * @property Users $createUser
+ * @property Projects $parent
+ * @property Projects[] $projects
  * @property Tasks[] $tasks
  */
-class Boards extends \yii\db\ActiveRecord
+class Projects extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'boards';
+        return 'projects';
     }
 
     /**
@@ -33,10 +36,11 @@ class Boards extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'create_user_id'], 'required'],
-            [['create_user_id'], 'integer'],
+            [['parent_id', 'create_user_id'], 'integer'],
             [['crate_datetime', 'update_datetime'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['create_user_id' => 'id']],
+            [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['create_user_id' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -48,6 +52,7 @@ class Boards extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
+            'parent_id' => Yii::t('app', 'Parent ID'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
             'crate_datetime' => Yii::t('app', 'Crate Datetime'),
             'update_datetime' => Yii::t('app', 'Update Datetime'),
@@ -59,7 +64,23 @@ class Boards extends \yii\db\ActiveRecord
      */
     public function getCreateUser()
     {
-        return $this->hasOne(Users::class, ['id' => 'create_user_id']);
+        return $this->hasOne(Users::className(), ['id' => 'create_user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(Projects::className(), ['id' => 'parent_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProjects()
+    {
+        return $this->hasMany(Projects::className(), ['parent_id' => 'id']);
     }
 
     /**
@@ -67,6 +88,6 @@ class Boards extends \yii\db\ActiveRecord
      */
     public function getTasks()
     {
-        return $this->hasMany(Tasks::class, ['board_id' => 'id']);
+        return $this->hasMany(Tasks::className(), ['project_id' => 'id']);
     }
 }

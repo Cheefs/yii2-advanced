@@ -4,8 +4,6 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Tasks */
-/* @var $boardsList array Boards */
-/* @var $users array User */
 
 $this->title = Yii::t('app', 'Create Tasks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
@@ -15,11 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-
     <?= $this->render('_form', [
         'model' => $model,
-        'boardsList' => $boardsList,
-        'users' => $users
     ]) ?>
 
 </div>

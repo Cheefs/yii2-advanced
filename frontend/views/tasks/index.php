@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\TaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Create Tasks'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -29,16 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'execute_user_id',
-            //'board_id',
-            'type',
+            'is_template',
+            'project_id',
+            //'type',
             //'status',
             //'create_user_id',
             //'crate_datetime',
             //'update_datetime',
+            //'priority_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
+    <?php Pjax::end(); ?>
 
 </div>

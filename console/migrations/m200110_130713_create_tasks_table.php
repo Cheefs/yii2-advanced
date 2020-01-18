@@ -16,7 +16,8 @@ class m200110_130713_create_tasks_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull()->comment('название задачи'),
             'execute_user_id' => $this->integer()->comment('указатель на исполнителя задачи'),
-            'board_id' => $this->integer()->comment('указатель на доску'),
+            'is_template' => $this->boolean()->notNull()->defaultValue( false )->comment('флаг является ли задача шаблоном'),
+            'project_id' => $this->integer()->comment('указатель на проект'),
             'type' => "ENUM('task', 'error', 'epic', 'subtask') 
                 comment 'перечисление типов задач (сделал аналогично как jira)' not null default 'task'
             ",
@@ -37,10 +38,10 @@ class m200110_130713_create_tasks_table extends Migration
         );
         /** внешний ключь указывающий на доску */
         $this->addForeignKey(
-            'fk-tasks-board_id',
+            'fk-tasks-project_id',
             'tasks',
-            'board_id',
-            'boards',
+            'project_id',
+            'projects',
             'id'
         );
         /** внешний ключь указывающий на создателя задачи */
@@ -58,7 +59,7 @@ class m200110_130713_create_tasks_table extends Migration
      */
     public function safeDown() {
         $this->dropForeignKey('fk-tasks-execute_user_id', 'tasks');
-        $this->dropForeignKey('fk-tasks-board_id', 'tasks');
+        $this->dropForeignKey('fk-tasks-project_id', 'tasks');
         $this->dropForeignKey('fk-tasks-create_user_id', 'tasks');
         $this->dropTable('tasks');
     }

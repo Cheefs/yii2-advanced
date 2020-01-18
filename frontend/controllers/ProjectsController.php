@@ -3,16 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Boards;
-use common\models\search\BoardsSearch;
+use common\models\Projects;
+use common\models\search\ProjectsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BoardsController implements the CRUD actions for Boards model.
+ * ProjectsController implements the CRUD actions for Projects model.
  */
-class BoardsController extends Controller
+class ProjectsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class BoardsController extends Controller
     }
 
     /**
-     * Lists all Boards models.
+     * Lists all Projects models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BoardsSearch();
+        $searchModel = new ProjectsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class BoardsController extends Controller
     }
 
     /**
-     * Displays a single Boards model.
+     * Displays a single Projects model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class BoardsController extends Controller
     }
 
     /**
-     * Creates a new Boards model.
+     * Creates a new Projects model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Boards();
+        $model = new Projects();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class BoardsController extends Controller
     }
 
     /**
-     * Updates an existing Boards model.
+     * Updates an existing Projects model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class BoardsController extends Controller
     }
 
     /**
-     * Deletes an existing Boards model.
+     * Deletes an existing Projects model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class BoardsController extends Controller
     }
 
     /**
-     * Finds the Boards model based on its primary key value.
+     * Finds the Projects model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Boards the loaded model
+     * @return Projects the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Boards::findOne($id)) !== null) {
+        if (($model = Projects::findOne($id)) !== null) {
             return $model;
         }
 

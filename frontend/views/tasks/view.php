@@ -1,11 +1,10 @@
 <?php
 
-/* @var $user \common\models\User */
-/* @var $this yii\web\View */
-/* @var $model common\models\Tasks */
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Tasks */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
@@ -33,15 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'execute_user_id',
-            'board_id',
+            'is_template',
+            'project_id',
             'type',
             'status',
             'create_user_id',
             'crate_datetime',
             'update_datetime',
+            'priority_id',
         ],
     ]) ?>
-
-    <?= $this->render('/chat/index', [ 'user' => $user, 'task' => $model ]) ?>
 
 </div>
