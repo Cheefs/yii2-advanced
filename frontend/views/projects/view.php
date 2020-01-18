@@ -10,6 +10,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
 ?>
 <div class="projects-view">
 
@@ -34,8 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'parent_id',
             'create_user_id',
             'crate_datetime',
-            'update_datetime',
         ],
     ]) ?>
-
 </div>

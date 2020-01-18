@@ -42,7 +42,7 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'create_user_id', 'priority_id'], 'required'],
+            [['title', 'create_user_id', 'priority_id', 'project_id' ], 'required'],
             [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id'], 'integer'],
             [['type', 'status'], 'string'],
             [['crate_datetime', 'update_datetime'], 'safe'],

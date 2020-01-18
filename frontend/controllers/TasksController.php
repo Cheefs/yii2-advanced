@@ -3,9 +3,11 @@
 namespace frontend\controllers;
 
 
+use common\models\Projects;
+use common\models\User;
 use Yii;
 use common\models\search\TaskSearch;
-use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\forms\TaskForm;
@@ -13,7 +15,7 @@ use frontend\models\forms\TaskForm;
 /**
  * TasksController implements the CRUD actions for Tasks model.
  */
-class TasksController extends Controller
+class TasksController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -55,6 +57,7 @@ class TasksController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'user' => Yii::$app->user->identity
         ]);
     }
 
@@ -71,8 +74,13 @@ class TasksController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->all();
+
         return $this->render('create', [
             'model' => $model,
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username')
         ]);
     }
 
@@ -90,9 +98,13 @@ class TasksController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->all();
 
         return $this->render('update', [
             'model' => $model,
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username')
         ]);
     }
 

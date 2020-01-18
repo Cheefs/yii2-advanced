@@ -6,13 +6,10 @@ use common\models\Tasks;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 
 class TaskForm extends Tasks
 {
     const STATUS_NEW = 'New';
-    public $status = self::STATUS_NEW;
 
     public function behaviors()
     {
@@ -33,20 +30,13 @@ class TaskForm extends Tasks
                 ],
                 'value' => \Yii::$app->user->id
             ],
+            [
+                'class' => AttributeBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'status',
+                ],
+                'value' => self::STATUS_NEW
+            ],
         ];
-    }
-
-    public function rules() {
-        $rules = [
-            [['asTemplate'], 'boolean']
-        ];
-        return ArrayHelper::merge(parent::rules(), $rules);
-    }
-
-    public function attributeLabels() {
-        $labels = [
-            'asTemplate' => \Yii::t('app', 'Save as template')
-        ];
-        return ArrayHelper::merge( parent::attributeLabels(), $labels );
     }
 }

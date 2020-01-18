@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Tasks */
+/* @var $projectsList common\models\Projects[]  */
+/* @var $usersList common\models\User[] */
 
 $this->title = Yii::t('app', 'Update Tasks: {name}', [
     'name' => $model->title,
@@ -18,6 +20,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'projectsList' => $projectsList,
+        'usersList' => $usersList
     ]) ?>
 
 </div>
