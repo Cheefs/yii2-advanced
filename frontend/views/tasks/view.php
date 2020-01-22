@@ -1,5 +1,6 @@
 <?php
 
+use frontend\widgets\chat\Chat;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -86,6 +87,6 @@ $title = $model->is_template ? Yii::t('app', 'template task') : $this->title;
     ]) ?>
 
     <?php if ( !$model->is_template ): ?>
-       <?= $this->render('/chat/index', [ 'user' => $user, 'task' => $model ]) ?>
+        <?= Chat::widget(['task_id' => $model->id, 'project_id' => $model->project_id ]) ?>
     <?php endif; ?>
 </div>

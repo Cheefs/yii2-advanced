@@ -3,6 +3,7 @@
 namespace frontend\models\forms;
 
 use common\models\Tasks;
+use frontend\common\behaviors\ChatNotificationBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -37,6 +38,9 @@ class TaskForm extends Tasks
                     ActiveRecord::EVENT_BEFORE_INSERT => 'status',
                 ],
                 'value' => self::STATUS_NEW
+            ],
+            [
+                'class' => ChatNotificationBehavior::class,
             ],
         ];
     }
