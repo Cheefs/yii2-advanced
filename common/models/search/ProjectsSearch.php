@@ -4,12 +4,12 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Boards;
+use common\models\Projects;
 
 /**
- * BoardsSearch represents the model behind the search form of `common\models\Boards`.
+ * ProjectsSearch represents the model behind the search form of `common\models\Projects`.
  */
-class BoardsSearch extends Boards
+class ProjectsSearch extends Projects
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class BoardsSearch extends Boards
     public function rules()
     {
         return [
-            [['id', 'create_user_id'], 'integer'],
-            [['name', 'crate_datetime', 'update_datetime'], 'safe'],
+            [['id', 'parent_id', 'create_user_id'], 'integer'],
+            [['name', 'create_at', 'update_at'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class BoardsSearch extends Boards
      */
     public function search($params)
     {
-        $query = Boards::find();
+        $query = Projects::find();
 
         // add conditions that should always apply here
 
@@ -59,9 +59,10 @@ class BoardsSearch extends Boards
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'create_user_id' => $this->create_user_id,
-            'crate_datetime' => $this->crate_datetime,
-            'update_datetime' => $this->update_datetime,
+            'crate_datetime' => $this->create_at,
+            'update_datetime' => $this->update_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

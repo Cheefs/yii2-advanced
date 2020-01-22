@@ -1,20 +1,23 @@
 <?php
 
-/* @var $user \common\models\User */
-/* @var $this yii\web\View */
-/* @var $model common\models\Tasks */
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Tasks */
+/* @var $user common\models\User */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$title = $model->is_template ? Yii::t('app', 'template task') : $this->title;
+
 ?>
 <div class="tasks-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode( $title ) ?></h1>
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -30,18 +33,59 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'title',
-            'execute_user_id',
-            'board_id',
             'type',
+            'title',
             'status',
-            'create_user_id',
-            'crate_datetime',
-            'update_datetime',
+            [
+                'label' => Yii::t('app', 'executor'),
+                'attribute' => 'execute_user_id',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    return $model->executeUser->username;
+                }
+            ],
+
+            [
+                'label' => Yii::t('app', 'project'),
+                'attribute' => 'project_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    $project = !$model->is_template ? $model->project : null;
+                    return $project ? Html::a( $project->name, ['projects/view', 'id' => $project->id ] ) : null;
+                }
+            ],
+
+            [
+                'label' => Yii::t('app', 'creator'),
+                'attribute' => 'project_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    return $model->createUser->username;
+                }
+            ],
+
+            [
+                'attribute' => 'create_at',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                }
+            ],
+
+            [
+                'label' => Yii::t('app', 'priority'),
+                'attribute' => 'priority_id',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    return $model->priority->title;
+                }
+            ],
         ],
     ]) ?>
 
-    <?= $this->render('/chat/index', [ 'user' => $user, 'task' => $model ]) ?>
-
+    <?php if ( !$model->is_template ): ?>
+       <?= $this->render('/chat/index', [ 'user' => $user, 'task' => $model ]) ?>
+    <?php endif; ?>
 </div>

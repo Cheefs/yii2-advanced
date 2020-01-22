@@ -2,9 +2,7 @@
 
 namespace frontend\controllers;
 
-use yii\web\Controller;
-
-class ChatController extends Controller
+class ChatController extends BaseController
 {
     public function actionIndex()
     {

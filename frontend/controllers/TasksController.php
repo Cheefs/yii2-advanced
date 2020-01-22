@@ -2,21 +2,22 @@
 
 namespace frontend\controllers;
 
-use Yii;
+
+use common\models\Priority;
+use common\models\Projects;
 use common\models\Tasks;
+use common\models\User;
+use Yii;
 use common\models\search\TaskSearch;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\Boards;
-use common\models\User;
 use frontend\models\forms\TaskForm;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
  */
-class TasksController extends Controller
+class TasksController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -25,7 +26,7 @@ class TasksController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -57,8 +58,9 @@ class TasksController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'user' => Yii::$app->user->identity,
+
             'model' => $this->findModel($id),
+            'user' => Yii::$app->user->identity
         ]);
     }
 
@@ -70,20 +72,22 @@ class TasksController extends Controller
     public function actionCreate()
     {
         $model = new TaskForm();
-        $boardsList = Boards::find()->all();
-        $users = User::findAll([ 'status' => User::STATUS_ACTIVE ]);
 
-        if ( $model->load(Yii::$app->request->post()) && $model->save()) {
-            if ( $model->asTemplate ) {
-                return $this->redirect(['index']);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->all();
+        $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
+        $templatesList = Tasks::findAll(['is_template' => true ]);
+
         return $this->render('create', [
             'model' => $model,
-            'users' => ArrayHelper::map($users, 'id', 'username'),
-            'boardsList' => ArrayHelper::map($boardsList, 'id', 'name')
+            'templatesList' => $templatesList,
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
+            'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
         ]);
     }
 
@@ -97,17 +101,21 @@ class TasksController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $boardsList = Boards::find()->all();
-        $users = User::findAll([ 'status' => User::STATUS_ACTIVE ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        $usersList = User::find()->all();
+        $projectsList = Projects::find()->all();
+        $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
+        $templatesList = Tasks::findAll(['is_template' => true ]);
 
         return $this->render('update', [
             'model' => $model,
-            'users' => ArrayHelper::map($users, 'id', 'username'),
-            'boardsList' => ArrayHelper::map($boardsList, 'id', 'name')
+            'templatesList' => $templatesList,
+            'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
+            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username')
         ]);
     }
 
@@ -117,6 +125,8 @@ class TasksController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -129,7 +139,7 @@ class TasksController extends Controller
      * Finds the Tasks model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tasks the loaded model
+     * @return TaskForm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
