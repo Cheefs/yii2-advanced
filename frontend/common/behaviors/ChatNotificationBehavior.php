@@ -23,7 +23,7 @@ class ChatNotificationBehavior extends Behavior
     }
 
     public function sendInsertNotification() {
-        $this->sendNotification(self::MODE_UPDATE);
+        $this->sendNotification();
     }
 
     public function sendUpdateNotification() {
