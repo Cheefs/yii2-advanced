@@ -3,7 +3,7 @@
 namespace frontend\models\forms;
 
 use common\models\Projects;
-use common\models\Tasks;
+use frontend\common\behaviors\ChatNotificationBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -28,6 +28,10 @@ class ProjectsForm extends Projects
                 ],
                 'value' => \Yii::$app->user->id
             ],
+            [
+                'class' => ChatNotificationBehavior::class,
+            ],
         ];
     }
+
 }

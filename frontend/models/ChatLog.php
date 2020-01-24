@@ -1,17 +1,27 @@
 <?php
 namespace frontend\models;
 
+use common\models\Projects;
+use common\models\Tasks;
 use Yii;
+use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "chat_log".
  *
- * @property int $id
- * @property string|null $username
- * @property int|null $created_at
- * @property int|null $updated_at
- * @property string|null $message
- * @property int $type
+ * @property int $id [int(11)]
+ * @property string $username [varchar(255)]  имя пользователя
+ * @property int $user_id [int(11)]  указатель на пользователя
+ * @property int $created_at [bigint(20)]  дата создания сообщения
+ * @property int $updated_at [bigint(20)]  дата изменения сообщения
+ * @property int $task_id [int(11)]  указатель на задачу
+ * @property string $message текст сообщения
+ *
+ * @property Tasks $task
+ * @property Projects $project
+ *
  */
 class ChatLog extends \yii\db\ActiveRecord
 {
@@ -33,7 +43,7 @@ class ChatLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at', 'project_id', 'task_id'], 'integer'],
             [['username', 'type'], 'required'],
             [['message'], 'string'],
             [['username'], 'string', 'max' => 255],
@@ -41,7 +51,9 @@ class ChatLog extends \yii\db\ActiveRecord
     }
     public function behaviors()
     {
-        return [TimestampBehavior::class => ['class' => TimestampBehavior::class]];
+        return [
+            TimestampBehavior::class => ['class' => TimestampBehavior::class],
+        ];
     }
     /**
      * {@inheritdoc}
@@ -54,6 +66,8 @@ class ChatLog extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'message' => 'Message',
+            'task_id' => 'Task Id',
+            'project_id' => 'Project Id'
         ];
     }
     /**
@@ -70,5 +84,15 @@ class ChatLog extends \yii\db\ActiveRecord
             Yii::error(json_encode($data));
         }
         return false;
+    }
+
+    public function getTask()
+    {
+        return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+    }
+
+    public function getProject()
+    {
+        return $this->hasOne(Tasks::class, ['id' => 'project_id']);
     }
 }
