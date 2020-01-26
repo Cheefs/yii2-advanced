@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Url;
+use yii\web\Link;
+use yii\web\Linkable;
 
 /**
  * This is the model class for table "projects".
@@ -19,7 +22,7 @@ use Yii;
  * @property Projects[] $projects
  * @property Tasks[] $tasks
  */
-class Projects extends \yii\db\ActiveRecord
+class Projects extends \yii\db\ActiveRecord implements Linkable
 {
     /**
      * {@inheritdoc}
@@ -88,5 +91,32 @@ class Projects extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Tasks::className(), ['project_id' => 'id']);
+    }
+
+
+    public function fields()
+    {
+        return array_merge( parent::fields(), [ 'parent' ]);
+    }
+
+    public function extraFields()
+    {
+        return [
+            'createUser',
+        ];
+    }
+
+    public function getLinks()
+    {
+        $links = [
+            Link::REL_SELF => Url::to(['tasks/view', 'id' => $this->id]),
+            'createUser' => Url::to(['user/view', 'id' => $this->create_user_id])
+        ];
+
+        if ( $this->parent_id ) {
+            $links['parent'] = Url::to(['projects/view', 'id' => $this->parent_id ]);
+        }
+
+        return $links;
     }
 }
