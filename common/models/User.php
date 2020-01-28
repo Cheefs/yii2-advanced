@@ -35,6 +35,12 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    const STATUS_MAP = [
+        self::STATUS_DELETED => 'deleted',
+        self::STATUS_INACTIVE => 'inactive',
+        self::STATUS_ACTIVE => 'active',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +65,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['email'], 'email'],
+            [['username', 'email'], 'string'],
+            [['username', 'email'], 'required'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE ],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
@@ -77,7 +86,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -179,9 +188,10 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword( $password = null )
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password = $password ?? 'tmppass';
+        $this->password_hash = Yii::$app->security->generatePasswordHash( $this->password );
     }
 
     /**
@@ -214,5 +224,43 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    private function setStatusString( $status ) {
+        return self::STATUS_MAP[ $status ] ?? null;
+    }
+
+    public function fields()
+    {
+        return [
+            'id', 'email', 'username',
+            'personalInfo' => function() {
+                return [];
+            },
+            'status' => function() {
+                return [
+                    'statusId' => $this->status,
+                    'statusLabel' => $this->setStatusString( $this->status )
+                ];
+            },
+            'created_at' => function () {
+                return Yii::$app->formatter->asDatetime( $this->created_at );
+            },
+            'updated_at' => function () {
+                return Yii::$app->formatter->asDatetime( $this->updated_at );
+            },
+        ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->generateAuthKey();
+        $this->generateEmailVerificationToken();
+        if ( !Yii::$app->request->post('password') ){
+            $this->setPassword();
+        } else {
+            $this->setPassword(Yii::$app->request->post('password'));
+        }
+        return parent::beforeSave($insert);
     }
 }

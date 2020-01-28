@@ -4,6 +4,9 @@ namespace common\models;
 
 use frontend\models\ChatLog;
 use Yii;
+use yii\helpers\Url;
+use yii\web\Link;
+use yii\web\Linkable;
 
 /**
  * This is the model class for table "tasks".
@@ -26,7 +29,7 @@ use Yii;
  * @property Priority $priority
  * @property Projects $project
  */
-class Tasks extends \yii\db\ActiveRecord
+class Tasks extends \yii\db\ActiveRecord implements Linkable
 {
     /**
      * {@inheritdoc}
@@ -111,5 +114,37 @@ class Tasks extends \yii\db\ActiveRecord
     public function getProject()
     {
         return $this->hasOne(Projects::class, ['id' => 'project_id']);
+    }
+
+    public function fields()
+    {
+        return array_merge(parent::fields(), [
+            'createUser',
+            'project'
+        ]);
+    }
+
+    public function extraFields()
+    {
+        return [
+            'author',
+            'authorEmail' => function () {
+                return $this->createUser->email;
+            },
+        ];
+    }
+
+    public function getLinks()
+    {
+        $links = [
+            Link::REL_SELF => Url::to(['tasks/view', 'id' => $this->id]),
+            'createUser' => Url::to(['user/view', 'id' => $this->create_user_id])
+        ];
+
+        if ( $this->project_id ) {
+            $links['project'] =  Url::to(['projects/view', 'id' => $this->project_id]);
+        }
+
+        return $links;
     }
 }
