@@ -2,17 +2,18 @@
 
 namespace frontend\controllers;
 
+use Yii;
 
 use common\models\Priority;
 use common\models\Projects;
 use common\models\Tasks;
 use common\models\User;
-use Yii;
 use common\models\search\TaskSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\forms\TaskForm;
+use frontend\common\behaviors\HistoryBehavior;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
@@ -30,6 +31,12 @@ class TasksController extends BaseController
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+            'history' => [
+                'class' => HistoryBehavior::class,
+                'actions' => [ 'view' ],
+                'key' => Tasks::HISTORY_KEY,
+                'rememberCount' => 5,
             ],
         ];
     }

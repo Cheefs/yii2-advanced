@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Tasks */
@@ -10,7 +11,7 @@ use yii\helpers\Html;
 /* @var $templatesList common\models\Tasks[] */
 
 $this->title = Yii::t('app', 'Create Tasks');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => Url::to(['tasks/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tasks-create">

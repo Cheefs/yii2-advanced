@@ -31,6 +31,7 @@ use yii\web\Linkable;
  */
 class Tasks extends \yii\db\ActiveRecord implements Linkable
 {
+    const HISTORY_KEY = 'tasks';
     /**
      * {@inheritdoc}
      */
