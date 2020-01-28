@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\helpers\TaskHelper;
 use Yii;
 
 use common\models\Priority;
@@ -80,7 +81,7 @@ class TasksController extends BaseController
     {
         $model = new TaskForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && TaskHelper::createTask( $model )) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
