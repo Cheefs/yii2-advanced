@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -10,6 +11,8 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Tasks');
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <div class="tasks-index">
 
@@ -20,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'title',
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
-                    return Html::a($model->title, ['tasks/view', 'id' => $model->id ]);
+                    return Html::a($model->title, Url::to(['tasks/view', 'id' => $model->id ]));
                 }
             ],
             [
@@ -63,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
                     $project = !$model->is_template ? $model->project : null;
-                    return $project ? Html::a( $project->name, ['projects/view', 'id' => $project->id ] ) : null;
+                    return $project ? Html::a( $project->name, Url::to(['projects/view', 'id' => $project->id ]) ) : null;
                 }
             ],
             'type',

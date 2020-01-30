@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\ProjectsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -15,11 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Projects'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Projects'), Url::to(['create']), ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function( $model ) {
                     /** @var $model common\models\Projects */
                     $parent = $model->parent;
-                    return $parent ? Html::a($parent->name, ['/projects/view', 'id' => $parent->id]) : null ;
+                    return $parent ? Html::a($parent->name,  Url::to(['/projects/view', 'id' => $parent->id]) : null ;
                 }
             ],
             [

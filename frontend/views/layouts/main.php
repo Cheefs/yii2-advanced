@@ -3,9 +3,13 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use common\helpers\HistoryHelper;
+use common\models\Tasks;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -30,7 +34,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => Url::home(),
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
@@ -40,8 +44,8 @@ AppAsset::register($this);
         ['label' => 'Tasks', 'url' => ['/tasks']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'Signup', 'url' => Url::to(['signup'])];
+        $menuItems[] = ['label' => 'Login', 'url' => Url::to(['login'])];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
@@ -65,8 +69,25 @@ AppAsset::register($this);
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
+
+        <!--  @todo вынести логику, а лучше оформить в виджет, с получением Task->title  -->
+        <div>
+            <?= Html::tag('h3', Yii::t('app', 'Last Visited Tasks') ) ?>
+            <?php $historyList = HistoryHelper::getHistory(Tasks::HISTORY_KEY); ?>
+
+            <?php if ( $historyList && ArrayHelper::isTraversable( $historyList ) ): ?>
+                <?php foreach ( $historyList as $item ): ?>
+                    <div>
+                        <?= Html::a("Task Id {$item['id']}", Url::to( $item['url'] ) ) ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
     </div>
 </div>
+
+
 
 <footer class="footer">
     <div class="container">

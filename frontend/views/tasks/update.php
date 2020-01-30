@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Tasks */
@@ -12,8 +13,8 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Update Tasks: {name}', [
     'name' => $model->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tasks'), 'url' => Url::to(['tasks/index'])];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' =>  Url::to(['view', 'id' => $model->id])];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="tasks-update">

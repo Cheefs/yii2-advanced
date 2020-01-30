@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -11,9 +12,11 @@ use yii\widgets\DetailView;
 /* @var $tasksDataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Projects'), 'url' =>  Url::to(['index'])];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+
 
 ?>
 <div class="projects-view">
@@ -21,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('app', 'Update'),  Url::to(['update', 'id' => $model->id]), ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'),  Url::to(['delete', 'id' => $model->id]), [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -40,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'value' => function($model) {
                     /** @var $model common\models\Projects */
-                    return Html::a($model->name, ['projects/view', 'id' => $model->id ] );
+                    return Html::a($model->name,  Url::to(['projects/view', 'id' => $model->id ]) );
                 }
             ],
             [
@@ -50,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     /** @var $model common\models\Projects */
                     $parent = $model->parent ?? null;
-                    return  $parent ? Html::a( $parent->name, ['projects/view', 'id' => $parent->id ] ) : null;
+                    return  $parent ? Html::a( $parent->name,  Url::to(['projects/view', 'id' => $parent->id ]) ) : null;
                 }
             ],
             [
@@ -82,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'title',
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
-                    return Html::a($model->title, ['tasks/view', 'id' => $model->id ]);
+                    return Html::a($model->title,  Url::to(['tasks/view', 'id' => $model->id ]));
                 }
             ],
             [
