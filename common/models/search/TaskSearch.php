@@ -17,7 +17,7 @@ class TaskSearch extends Tasks
     public function rules()
     {
         return [
-            [['id', 'execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'create_at', 'update_at'], 'integer'],
+            [['id', 'execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
             [['title', 'type', 'status'], 'safe'],
         ];
     }
@@ -63,8 +63,8 @@ class TaskSearch extends Tasks
             'is_template' => $this->is_template,
             'project_id' => $this->project_id,
             'create_user_id' => $this->create_user_id,
-            'create_at' => $this->create_at,
-            'update_at' => $this->update_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'priority_id' => $this->priority_id,
         ]);
 

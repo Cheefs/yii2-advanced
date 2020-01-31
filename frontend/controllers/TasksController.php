@@ -81,7 +81,7 @@ class TasksController extends BaseController
     {
         $model = new TaskForm();
 
-        if ($model->load(Yii::$app->request->post()) && TaskHelper::createTask( $model )) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() ) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -5,7 +5,7 @@
 
 <div class="panel panel-success">
     <div class="panel-heading">My Tasks</div>
-    <div class="panel-body my__tasks">
+    <div class="panel-body page_main">
 
         <table class="table table-striped ">
             <thead>

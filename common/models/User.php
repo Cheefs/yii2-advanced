@@ -256,10 +256,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->generateAuthKey();
         $this->generateEmailVerificationToken();
-        if ( !Yii::$app->request->post('password') ){
+        if ( !$this->password ){
             $this->setPassword();
         } else {
-            $this->setPassword(Yii::$app->request->post('password'));
+            $this->setPassword( $this->password  );
         }
         return parent::beforeSave($insert);
     }

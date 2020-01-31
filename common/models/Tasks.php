@@ -19,8 +19,8 @@ use yii\web\Linkable;
  * @property string $type перечисление типов задач (сделал аналогично как jira)
  * @property string $status перечисление статусов задач
  * @property int $create_user_id указатель на пользователя создашего задачу
- * @property integer $create_at
- * @property integer $update_at
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property int $priority_id указатель на приоритет задачи
  *
  * @property ChatLog[] $chatLogs
@@ -54,7 +54,7 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
     {
         return [
             [['title', 'priority_id' ], 'required'],
-            [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'create_at', 'update_at'], 'integer'],
+            [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
             [['type', 'status'], 'string'],
             [['title'], 'string', 'max' => 255],
             [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['create_user_id' => 'id']],
@@ -78,8 +78,8 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
             'type' => Yii::t('app', 'Type'),
             'status' => Yii::t('app', 'Status'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
-            'create_at' => Yii::t('app', 'Create At'),
-            'update_at' => Yii::t('app', 'Update At'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
             'priority_id' => Yii::t('app', 'Priority ID'),
         ];
     }

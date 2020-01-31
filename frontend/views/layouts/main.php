@@ -32,35 +32,37 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Url::home(),
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Projects', 'url' => ['/projects']],
-        ['label' => 'Tasks', 'url' => ['/tasks']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => Url::to(['signup'])];
-        $menuItems[] = ['label' => 'Login', 'url' => Url::to(['login'])];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
+        NavBar::begin([
+            'brandLabel' => Yii::$app->name,
+            'brandUrl' => Url::home(),
+            'options' => [
+                'class' => 'navbar-inverse navbar-fixed-top',
+            ],
+        ]);
+        $menuItems = [
+            ['label' => 'Projects', 'url' => ['/projects']],
+            ['label' => 'Tasks', 'url' => ['/tasks']],
+        ];
+        if (Yii::$app->user->isGuest) {
+            $menuItems = [
+                ['label' => 'Signup', 'url' => Url::to(['signup'])],
+                ['label' => 'Login', 'url' => Url::to(['login'])],
+            ];
+        } else {
+            $menuItems[] = '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>';
+        }
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => $menuItems,
+        ]);
+        NavBar::end();
     ?>
 
     <div class="container">

@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function( $model ) {
                     /** @var $model common\models\Projects */
                     $parent = $model->parent;
-                    return $parent ? Html::a($parent->name,  Url::to(['/projects/view', 'id' => $parent->id]) : null ;
+                    return $parent ? Html::a($parent->name,  Url::to(['/projects/view', 'id' => $parent->id])) : null ;
                 }
             ],
             [
@@ -49,18 +49,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'format' => 'raw',
-                'attribute' => 'create_at',
+                'attribute' => 'created_at',
                 'value' => function( $model ) {
                     /** @var $model common\models\Projects */
-                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                    return Yii::$app->formatter->asDatetime( $model->created_at );
                 }
             ],
             [
                 'format' => 'raw',
-                'attribute' => 'update_at',
+                'attribute' => 'updated_at',
                 'value' => function( $model ) {
                     /** @var $model common\models\Projects */
-                    return Yii::$app->formatter->asDatetime( $model->update_at );
+                    return Yii::$app->formatter->asDatetime( $model->updated_at );
                 }
             ],
 

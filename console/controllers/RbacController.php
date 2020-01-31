@@ -32,6 +32,7 @@ class RbacController extends \yii\console\Controller
                 echo "user created password: $username \nplease change your password!!!";
             }
         }
+
         $adminRole = \Yii::$app->authManager->getRole('admin');
         \Yii::$app->authManager->assign($adminRole, $user->id);
     }

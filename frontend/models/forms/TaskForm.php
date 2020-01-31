@@ -20,8 +20,8 @@ class TaskForm extends Tasks
             [
                 'class' => TimestampBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'create_at',
-                    ActiveRecord::EVENT_BEFORE_UPDATE => 'update_at',
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => time()
             ],

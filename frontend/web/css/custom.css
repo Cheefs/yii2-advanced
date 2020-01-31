@@ -1,4 +1,4 @@
-.panel-body.my__tasks {
-    max-height: 500px;
+.panel-body.page_main {
+    height: 300px;
     overflow: auto;
 }

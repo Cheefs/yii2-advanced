@@ -16,33 +16,6 @@ class TaskHelper
     const TASKS_KEY_FOR_USER = 'tasks-to-user_id=';
     const ACTIVE_TASKS = [Tasks::STATUS_NEW, Tasks::STATUS_ACTIVE, Tasks::STATUS_IN_WORK];
     const DEFAULT_DURATION = 3600;
-    /**
-     * @param $model Tasks
-     * @return bool
-     */
-    public static function createTask( $model ) {
-        $saved = false;
-        try {
-            $saved = $model->save();
-            if (!$saved) {
-                throw new \Exception($model);
-            }
-
-            ChatLog::create([
-                'username' => \Yii::$app->user->identity->username,
-                'message' => 'Task Created',
-                'task_id' => $model->id,
-                'project_id' => $model->project_id
-            ]);
-
-        } catch ( \Exception $ex ) {
-            $date = date('Y-M-D');
-            (new Logger())->log(Json::encode([
-                "[task_create][$date]" => $ex->getMessage()
-            ]), 'error');
-        }
-        return $saved;
-    }
 
     /**
      * Получение задач для пользователя, с функцией кеширования
@@ -57,17 +30,17 @@ class TaskHelper
         $cashedTasks = $useCache ? \Yii::$app->cache->get($cacheKey) : null;
 
         if ( !$cashedTasks || !count( $cashedTasks )) {
-            $tasks = Tasks::find()
-                ->where(['create_user_id' => $userId ]);
+            $tasks = Tasks::find()->where(['create_user_id' => $userId ]);
 
-                if ( $showCreated ) {
-                    $tasks->orWhere(['execute_user_id' => $userId ]);
-                }
+            if ( $showCreated ) {
+                $tasks->orWhere(['execute_user_id' => $userId ]);
+            }
 
-                $tasks->andWhere([ 'in', 'status', $statuses ])->all();
-            \Yii::$app->cache->set( $cacheKey, $tasks, self::DEFAULT_DURATION );
-            $cashedTasks = $tasks;
+            $tasks->andWhere([ 'in', 'status', $statuses ]);
+            $cashedTasks = $tasks->all();
+            \Yii::$app->cache->set( $cacheKey, $cashedTasks, self::DEFAULT_DURATION );
         }
+
         return $cashedTasks;
     }
 }

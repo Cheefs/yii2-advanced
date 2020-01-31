@@ -14,8 +14,8 @@ use yii\web\Linkable;
  * @property string $name название проетка
  * @property int|null $parent_id указатель на родительский проект
  * @property int $create_user_id указатель на пользователя создашего доску
- * @property string|null $create_at
- * @property string|null $update_at
+ * @property string|null $created_at
+ * @property string|null $updated_at
  *
  * @property Users $createUser
  * @property Projects $parent
@@ -39,7 +39,7 @@ class Projects extends \yii\db\ActiveRecord implements Linkable
     {
         return [
             [['name'], 'required'],
-            [['parent_id', 'create_user_id', 'create_at', 'update_at'], 'integer'],
+            [['parent_id', 'create_user_id', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['create_user_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['parent_id' => 'id']],
@@ -56,8 +56,8 @@ class Projects extends \yii\db\ActiveRecord implements Linkable
             'name' => Yii::t('app', 'Name'),
             'parent_id' => Yii::t('app', 'Parent ID'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
-            'create_at' => Yii::t('app', 'Create At'),
-            'update_at' => Yii::t('app', 'Update At'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 

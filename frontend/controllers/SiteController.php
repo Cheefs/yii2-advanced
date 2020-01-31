@@ -85,7 +85,7 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'tasks' => $tasksList,
-            'activitiesList' => $activitiesList
+            'activityList' => $activitiesList
         ]);
     }
 

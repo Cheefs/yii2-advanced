@@ -66,10 +66,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'format' => 'raw',
-                'attribute' => 'create_at',
+                'attribute' => 'created_at',
                 'value' => function($model) {
                     /** @var $model common\models\Projects */
-                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                    return Yii::$app->formatter->asDatetime( $model->created_at );
                 }
             ],
         ],
@@ -108,10 +108,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'create_at',
+                'attribute' => 'created_at',
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
-                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                    return Yii::$app->formatter->asDatetime( $model->created_at );
                 }
             ],
             [
