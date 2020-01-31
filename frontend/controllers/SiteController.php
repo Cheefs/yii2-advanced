@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\helpers\ChatLogHelper;
+use common\helpers\TaskHelper;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -74,7 +76,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if ( \Yii::$app->user->isGuest ) {
+            return $this->redirect(['login']);
+        }
+
+        $tasksList = TaskHelper::getTaskByUserId( Yii::$app->user->id );
+        $activitiesList = ChatLogHelper::getLastActivityByUserTasks( Yii::$app->user->id );
+
+        return $this->render('index', [
+            'tasks' => $tasksList,
+            'activitiesList' => $activitiesList
+        ]);
     }
 
     /**
@@ -133,16 +145,6 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 
     /**

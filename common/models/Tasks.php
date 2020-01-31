@@ -27,10 +27,17 @@ use yii\web\Linkable;
  * @property Users $createUser
  * @property Users $executeUser
  * @property Priority $priority
+ * @property array $links
  * @property Projects $project
  */
 class Tasks extends \yii\db\ActiveRecord implements Linkable
 {
+    const STATUS_NEW = 'new';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_IN_WORK = 'in_work';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_COMPLETE = 'complete';
+
     const HISTORY_KEY = 'tasks';
     /**
      * {@inheritdoc}

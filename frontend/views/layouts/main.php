@@ -69,21 +69,6 @@ AppAsset::register($this);
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
-
-        <!--  @todo вынести логику, а лучше оформить в виджет, с получением Task->title  -->
-        <div>
-            <?= Html::tag('h3', Yii::t('app', 'Last Visited Tasks') ) ?>
-            <?php $historyList = HistoryHelper::getHistory(Tasks::HISTORY_KEY); ?>
-
-            <?php if ( $historyList && ArrayHelper::isTraversable( $historyList ) ): ?>
-                <?php foreach ( $historyList as $item ): ?>
-                    <div>
-                        <?= Html::a("Task Id {$item['id']}", Url::to( $item['url'] ) ) ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
     </div>
 </div>
 
