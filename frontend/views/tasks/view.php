@@ -35,7 +35,7 @@ $title = $model->is_template ? Yii::t('app', 'template task') : $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'type',
+            'type_id',
             'title',
             'status',
             [

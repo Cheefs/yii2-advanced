@@ -81,6 +81,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'summary' => false,
         'columns' => [
             [
+                'label' => 'T',
+                'attribute' => 'type_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    /** @var $model \common\models\Tasks */
+                    return Html::tag('i', '', [
+                        'class' => $model->type->icon
+                    ]);
+                },
+            ],
+            [
                 'format' => 'raw',
                 'attribute' => 'title',
                 'value' => function($model) {
@@ -97,7 +108,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            'type',
             'status',
             [
                 'label' => Yii::t('app', 'creator'),
@@ -122,8 +132,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->priority->title;
                 }
             ],
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

@@ -36,7 +36,8 @@ class TaskHelper
                 $tasks->orWhere(['execute_user_id' => $userId ]);
             }
 
-            $tasks->andWhere([ 'in', 'status', $statuses ]);
+            $tasks->andWhere([ 'in', 'status', $statuses ])
+                  ->andWhere(['is_template' => false ]);
             $cashedTasks = $tasks->all();
             \Yii::$app->cache->set( $cacheKey, $cashedTasks, self::DEFAULT_DURATION );
         }

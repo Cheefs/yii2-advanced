@@ -5,7 +5,9 @@
 ?>
 
 <div class="container">
-  <h1 class="text-uppercase"> task tracker</h1>
+  <h1 class="text-uppercase text-center">
+    <strong><i>task tracker</i></strong>
+  </h1>
   <div class="row">
         <div class="col-sm-6">
             <?= $this->render('_partial/introduction') ?>

@@ -17,8 +17,8 @@ class TaskSearch extends Tasks
     public function rules()
     {
         return [
-            [['id', 'execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'type', 'status'], 'safe'],
+            [['id', 'execute_user_id', 'type_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'status'], 'safe'],
         ];
     }
 
@@ -66,10 +66,10 @@ class TaskSearch extends Tasks
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'priority_id' => $this->priority_id,
+            'type_id', $this->type_id
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;

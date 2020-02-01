@@ -16,7 +16,7 @@ use yii\web\Linkable;
  * @property int|null $execute_user_id указатель на исполнителя задачи
  * @property int $is_template флаг является ли задача шаблоном
  * @property int|null $project_id указатель на проект
- * @property string $type перечисление типов задач (сделал аналогично как jira)
+ * @property int $type_id
  * @property string $status перечисление статусов задач
  * @property int $create_user_id указатель на пользователя создашего задачу
  * @property integer $created_at
@@ -29,6 +29,7 @@ use yii\web\Linkable;
  * @property Priority $priority
  * @property array $links
  * @property Projects $project
+ * @property TaskTypes $type
  */
 class Tasks extends \yii\db\ActiveRecord implements Linkable
 {
@@ -55,12 +56,13 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
         return [
             [['title', 'priority_id' ], 'required'],
             [['execute_user_id', 'is_template', 'project_id', 'create_user_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
-            [['type', 'status'], 'string'],
+            [['status'], 'string'],
             [['title'], 'string', 'max' => 255],
             [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['create_user_id' => 'id']],
             [['execute_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['execute_user_id' => 'id']],
             [['priority_id'], 'exist', 'skipOnError' => true, 'targetClass' => Priority::class, 'targetAttribute' => ['priority_id' => 'id']],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::class, 'targetAttribute' => ['project_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaskTypes::class, 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -75,7 +77,7 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
             'execute_user_id' => Yii::t('app', 'Execute User ID'),
             'is_template' => Yii::t('app', 'Is Template'),
             'project_id' => Yii::t('app', 'Project ID'),
-            'type' => Yii::t('app', 'Type'),
+            'type_id' => Yii::t('app', 'type_id'),
             'status' => Yii::t('app', 'Status'),
             'create_user_id' => Yii::t('app', 'Create User ID'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -122,6 +124,14 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
     public function getProject()
     {
         return $this->hasOne(Projects::class, ['id' => 'project_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(TaskTypes::class, ['id' => 'type_id']);
     }
 
     public function fields()

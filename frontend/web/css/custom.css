@@ -1,4 +1,81 @@
+table tr>td, table tr>th {
+    text-align: center;
+}
+
 .panel-body.page_main {
     height: 300px;
     overflow: auto;
+}
+
+.panel-heading {
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+}
+
+.active_row {
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.active_row:hover {
+    background-color: #dddddd !important;
+}
+
+.message {
+    border: 2px solid #ddd;
+    width: 100%;
+    display: flex;
+    margin: 5px 0;
+    align-items: center;
+}
+
+.message.danger {
+    color: #d43f3a;
+}
+
+.message .message_user {
+    border-right: 2px solid #ddd;
+    padding: 10px;
+}
+
+.message .text__block {
+    padding: 0 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.message .text__block .message_text {
+    padding: 5px 0;
+}
+
+.message .text__block .message_date {
+    font-size: smaller;
+    color: #9d9d9d;
+    border-top: 2px solid #dddddd;
+    width: 100%;
+
+    padding: 2px;
+}
+
+/* tasks types style */
+.glyphicon.task {
+    color: #1db921;
+    font-weight: bold;
+}
+
+.glyphicon.error {
+    color: #ff0800;
+    font-weight: bold;
+}
+
+.glyphicon.epic {
+    color: #8700ec;
+    font-weight: bold;
+}
+
+.glyphicon.subtask {
+    color: #0094ff;
+    font-weight: bold;
 }

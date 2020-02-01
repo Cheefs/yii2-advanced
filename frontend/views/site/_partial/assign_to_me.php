@@ -1,6 +1,9 @@
 <?php
 /** @var $tasks \common\models\Tasks[] */
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 
 <div class="panel panel-success">
@@ -11,40 +14,26 @@
             <thead>
                 <tr>
                     <th>T</th>
-                    <th>Name</th>
-                    <th>Description</th>
                     <th>Priority</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Project</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($tasks as $task): ?>
-                    <tr>
+                    <tr class="active_row" onclick="location.href='tasks/view?id=<?= $task->id ?>'">
+                        <td><i class="<?= $task->type->icon ?>"></i></td>
+
                         <td><?= $task->priority->title ?></td>
-                        <td><?= $task->type ?></td>
                         <th><?= $task->title ?></th>
                         <th><?= $task->status ?></th>
-                        <th><?= $task->project->name ?></th>
-                    </tr>
-                    <tr>
-                        <td><?= $task->priority->title ?></td>
-                        <td><?= $task->type ?></td>
-                        <th><?= $task->title ?></th>
-                        <th><?= $task->status ?></th>
-                        <th><?= $task->project->name ?></th>
-                    </tr>
-                    <tr>
-                        <td><?= $task->priority->title ?></td>
-                        <td><?= $task->type ?></td>
-                        <th><?= $task->title ?></th>
-                        <th><?= $task->status ?></th>
-                        <th><?= $task->project->name ?></th>
-                    </tr>
-                    <tr>
-                        <td><?= $task->priority->title ?></td>
-                        <td><?= $task->type ?></td>
-                        <th><?= $task->title ?></th>
-                        <th><?= $task->status ?></th>
-                        <th><?= $task->project->name ?></th>
+                        <th>
+                            <?php
+                                $poject = $task->project;
+                               echo Html::a($poject->name, Url::to(['projects/view', 'id' => $poject->id]));
+                            ?>
+                        </th>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

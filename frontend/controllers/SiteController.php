@@ -81,7 +81,7 @@ class SiteController extends Controller
         }
 
         $tasksList = TaskHelper::getTaskByUserId( Yii::$app->user->id );
-        $activitiesList = ChatLogHelper::getLastActivityByUserTasks( Yii::$app->user->id );
+        $activitiesList = ChatLogHelper::getLastActivityByUserTasks( Yii::$app->user->id, $tasksList );
 
         return $this->render('index', [
             'tasks' => $tasksList,
