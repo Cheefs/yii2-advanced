@@ -37,7 +37,7 @@ class Tasks extends \yii\db\ActiveRecord implements Linkable
     const STATUS_ACTIVE = 'active';
     const STATUS_IN_WORK = 'in_work';
     const STATUS_CANCELED = 'canceled';
-    const STATUS_COMPLETE = 'complete';
+    const STATUS_COMPLETE = 'completed';
 
     const HISTORY_KEY = 'tasks';
     /**

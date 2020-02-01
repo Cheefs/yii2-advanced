@@ -16,6 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\forms\TaskForm;
 use frontend\common\behaviors\HistoryBehavior;
+use yii\web\Response;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
@@ -140,6 +141,21 @@ class TasksController extends BaseController
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    /**
+     * Смена статуса задачи
+     * @param int $id
+     * @param $status string
+     * @return bool|Response
+    */
+    public function actionStatus($id, $status) {
+        $model = Tasks::findOne(['id' => $id ]);
+
+        $model->status = $status;
+        if ( $model->save() ) {
+            return $this->redirect(['view', 'id' => $id ]);
+        }
+        return false;
     }
 
     /**

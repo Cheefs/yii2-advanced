@@ -118,3 +118,18 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+.task_status {
+    text-transform: uppercase;
+    color: #6fbf73;
+    font-weight: bold;
+}
+
+.task_status:before {
+    content: open-quote;
+}
+
+.task_status:after {
+    content: close-quote;
+}
