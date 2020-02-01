@@ -63,7 +63,17 @@ $canEditOrDelete = Yii::$app->user->can('admin') || Yii::$app->user->id === $mod
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'type_id',
+            [
+                'label' => 'T',
+                'attribute' => 'type_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    /** @var $model \common\models\Tasks */
+                    return Html::tag('i', '', [
+                        'class' => $model->type->icon
+                    ]);
+                },
+            ],
             'title',
             'status',
             [
