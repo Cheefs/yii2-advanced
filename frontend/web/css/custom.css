@@ -79,3 +79,34 @@ table tr>td, table tr>th {
     color: #0094ff;
     font-weight: bold;
 }
+
+
+.task_status {
+    text-transform: uppercase;
+
+    font-weight: bold;
+}
+
+.task_status.new {
+    color: #bfb607;
+}
+
+.task_status.in_work {
+    color: #0094ff;
+}
+
+.task_status.completed {
+    color: #1db921;
+}
+
+.task_status.canceled {
+    color: #ff0800;
+}
+
+.task_status:before {
+    content: open-quote;
+}
+
+.task_status:after {
+    content: close-quote;
+}

@@ -24,7 +24,7 @@ $canEditOrDelete = Yii::$app->user->can('admin') || Yii::$app->user->id === $mod
 
     <h2 class="text-center">
         <strong><?= Html::encode( $title ) ?></strong>&nbsp;
-        <span class="task_status"><?= \Yii::t('app', $model->status ) ?></span>
+        <span class="task_status <?= $model->status ?>"><?= \Yii::t('app', $model->status ) ?></span>
     </h2>
     <p>
         <?php if ( $canEditOrDelete ): ?>
@@ -36,6 +36,13 @@ $canEditOrDelete = Yii::$app->user->can('admin') || Yii::$app->user->id === $mod
                     'method' => 'post',
                 ],
             ]) ?>
+        <?php endif; ?>
+
+        <?php if ( $model->status !== Tasks::STATUS_IN_WORK ): ?>
+            <?= Html::a(Yii::t('app', 'In Work'), Url::to([
+                'status', 'id' => $model->id, 'status' => Tasks::STATUS_IN_WORK
+            ]), ['class' => 'btn btn-info'])
+            ?>
         <?php endif; ?>
 
         <?php if ( $model->status !== Tasks::STATUS_COMPLETE ): ?>
