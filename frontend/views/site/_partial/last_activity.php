@@ -1,5 +1,5 @@
 <?php
-/** @var $activityList \frontend\models\ChatLog[] */
+/** @var $activityList \common\models\ChatLog[] */
 
 use common\models\User;
 

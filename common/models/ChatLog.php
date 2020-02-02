@@ -1,5 +1,5 @@
 <?php
-namespace frontend\models;
+namespace common\models;
 
 use common\models\Projects;
 use common\models\Tasks;

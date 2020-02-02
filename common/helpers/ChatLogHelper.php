@@ -2,7 +2,7 @@
 
 namespace common\helpers;
 
-use frontend\models\ChatLog;
+use common\models\ChatLog;
 
 class ChatLogHelper
 {

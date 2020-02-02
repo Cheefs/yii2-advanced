@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use frontend\models\ChatLog;
+use common\models\ChatLog;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Link;

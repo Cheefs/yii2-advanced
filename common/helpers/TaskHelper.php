@@ -3,7 +3,7 @@
 namespace common\helpers;
 
 use common\models\Tasks;
-use frontend\models\ChatLog;
+use common\models\ChatLog;
 use yii\helpers\Json;
 use yii\log\Logger;
 
