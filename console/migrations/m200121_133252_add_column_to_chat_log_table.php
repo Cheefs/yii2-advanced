@@ -15,7 +15,7 @@ class m200121_133252_add_column_to_chat_log_table extends Migration
         $this->addColumn(
             'chat_log',
             'project_id',
-            $this->integer()->notNull()->comment('указатель на проект'),
+            $this->integer()->notNull()->comment('указатель на проект')
         );
 
         $this->addForeignKey(

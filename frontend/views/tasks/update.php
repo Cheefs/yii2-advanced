@@ -9,6 +9,7 @@ use yii\helpers\Url;
 /* @var $usersList common\models\User[] */
 /* @var $priorityList common\models\Priority[] */
 /* @var $templatesList common\models\Tasks[] */
+/* @var $typesList \common\models\TaskTypes[] */
 
 $this->title = Yii::t('app', 'Update Tasks: {name}', [
     'name' => $model->title,
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'usersList' => $usersList,
         'priorityList' => $priorityList,
         'templatesList' => $templatesList,
+        'typesList' => $typesList
     ]) ?>
 
 </div>

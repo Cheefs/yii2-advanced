@@ -32,35 +32,37 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Url::home(),
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Projects', 'url' => ['/projects']],
-        ['label' => 'Tasks', 'url' => ['/tasks']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => Url::to(['signup'])];
-        $menuItems[] = ['label' => 'Login', 'url' => Url::to(['login'])];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
+        NavBar::begin([
+            'brandLabel' => Yii::$app->name,
+            'brandUrl' => Url::home(),
+            'options' => [
+                'class' => 'navbar-inverse navbar-fixed-top',
+            ],
+        ]);
+        $menuItems = [
+            ['label' => 'Projects', 'url' => ['/projects']],
+            ['label' => 'Tasks', 'url' => ['/tasks']],
+        ];
+        if (Yii::$app->user->isGuest) {
+            $menuItems = [
+                ['label' => 'Signup', 'url' => Url::to(['signup'])],
+                ['label' => 'Login', 'url' => Url::to(['login'])],
+            ];
+        } else {
+            $menuItems[] = '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>';
+        }
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => $menuItems,
+        ]);
+        NavBar::end();
     ?>
 
     <div class="container">
@@ -69,21 +71,6 @@ AppAsset::register($this);
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
-
-        <!--  @todo вынести логику, а лучше оформить в виджет, с получением Task->title  -->
-        <div>
-            <?= Html::tag('h3', Yii::t('app', 'Last Visited Tasks') ) ?>
-            <?php $historyList = HistoryHelper::getHistory(Tasks::HISTORY_KEY); ?>
-
-            <?php if ( $historyList && ArrayHelper::isTraversable( $historyList ) ): ?>
-                <?php foreach ( $historyList as $item ): ?>
-                    <div>
-                        <?= Html::a("Task Id {$item['id']}", Url::to( $item['url'] ) ) ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
     </div>
 </div>
 

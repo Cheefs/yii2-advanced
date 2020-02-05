@@ -2,7 +2,7 @@
 
 namespace console\components;
 
-use frontend\models\ChatLog;
+use common\models\ChatLog;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use yii\helpers\Json;

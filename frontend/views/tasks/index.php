@@ -28,7 +28,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'label' => 'T',
+                'filter' => false,
+                'attribute' => 'type_id',
+                'format' => 'html',
+                'value' => function($model) {
+                 /** @var $model \common\models\Tasks */
+                    return Html::tag('i', '', [
+                        'class' => $model->type->icon
+                    ]);
+                }
+            ],
+            [
+                'label' => Yii::t('app', 'priority'),
+                'attribute' => 'priority_id',
+                'value' => function($model) {
+                    /** @var $model common\models\Tasks */
+                    return $model->priority->title;
+                }
+            ],
             [
                 'format' => 'raw',
                 'attribute' => 'title',
@@ -68,7 +87,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $project ? Html::a( $project->name, Url::to(['projects/view', 'id' => $project->id ]) ) : null;
                 }
             ],
-            'type',
             'status',
             [
                 'label' => Yii::t('app', 'creator'),
@@ -79,18 +97,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'create_at',
+                'attribute' => 'created_at',
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
-                    return Yii::$app->formatter->asDatetime( $model->create_at );
-                }
-            ],
-            [
-                'label' => Yii::t('app', 'priority'),
-                'attribute' => 'priority_id',
-                'value' => function($model) {
-                    /** @var $model common\models\Tasks */
-                    return $model->priority->title;
+                    return Yii::$app->formatter->asDatetime( $model->created_at );
                 }
             ],
 

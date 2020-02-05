@@ -34,9 +34,9 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'create_user_id') ?>
 
-    <?php // echo $form->field($model, 'create_at') ?>
+    <?php // echo $form->field($model, 'created_at') ?>
 
-    <?php // echo $form->field($model, 'update_at') ?>
+    <?php // echo $form->field($model, 'updated_at') ?>
 
     <?php // echo $form->field($model, 'priority_id') ?>
 

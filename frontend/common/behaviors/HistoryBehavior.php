@@ -37,11 +37,15 @@ class HistoryBehavior extends Behavior
          /** @var $owner Controller */
          $owner = $this->owner;
          $action = $owner->action->id;
-         $paramId = $owner->actionParams['id'];
+
 
          if ( ArrayHelper::isIn($action, $this->actions) ) {
+             $paramId = $owner->actionParams['id'];
+
              $this->history = HistoryHelper::getHistory( $this->key );
              if ( ArrayHelper::isTraversable( $this->history ) && count ( $this->history ) > $this->rememberCount ) {
+                 $paramId = $owner->actionParams['id'];
+
                  array_shift(  $this->history  );
              }
 
@@ -51,7 +55,6 @@ class HistoryBehavior extends Behavior
                      'url' => Url::to( $owner->actionParams )
                  ];
              }
-
              HistoryHelper::saveHistory( $this->key, $this->history );
          }
      }

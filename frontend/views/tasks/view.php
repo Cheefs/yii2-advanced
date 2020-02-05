@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Tasks;
 use frontend\widgets\chat\Chat;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -16,26 +17,63 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $title = $model->is_template ? Yii::t('app', 'template task') : $this->title;
 
+$canEditOrDelete = Yii::$app->user->can('admin') || Yii::$app->user->id === $model->create_user_id ;
+
 ?>
 <div class="tasks-view">
 
-    <h1><?= Html::encode( $title ) ?></h1>
-
+    <h2 class="text-center">
+        <strong><?= Html::encode( $title ) ?></strong>&nbsp;
+        <span class="task_status <?= $model->status ?>"><?= \Yii::t('app', $model->status ) ?></span>
+    </h2>
     <p>
-        <?= Html::a(Yii::t('app', 'Update'),  Url::to(['update', 'id' => $model->id]), ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'),  Url::to(['delete', 'id' => $model->id]), [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if ( $canEditOrDelete ): ?>
+            <?= Html::a(Yii::t('app', 'Update'),  Url::to(['update', 'id' => $model->id]), ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Delete'),  Url::to(['delete', 'id' => $model->id]), [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
+
+        <?php if ( $model->status !== Tasks::STATUS_IN_WORK ): ?>
+            <?= Html::a(Yii::t('app', 'In Work'), Url::to([
+                'status', 'id' => $model->id, 'status' => Tasks::STATUS_IN_WORK
+            ]), ['class' => 'btn btn-info'])
+            ?>
+        <?php endif; ?>
+
+        <?php if ( $model->status !== Tasks::STATUS_COMPLETE ): ?>
+            <?= Html::a(Yii::t('app', 'Complete'), Url::to([
+                'status', 'id' => $model->id, 'status' => Tasks::STATUS_COMPLETE
+            ]), ['class' => 'btn btn-success'])
+            ?>
+        <?php endif; ?>
+
+        <?php if ( $model->status !== Tasks::STATUS_COMPLETE && $model->status !== Tasks::STATUS_CANCELED ): ?>
+            <?= Html::a(Yii::t('app', 'Cancel'), Url::to([
+                'status', 'id' => $model->id, 'status' => Tasks::STATUS_CANCELED
+            ]), ['class' => 'btn btn-warning'])
+            ?>
+        <?php endif; ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'type',
+            [
+                'label' => 'T',
+                'attribute' => 'type_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    /** @var $model \common\models\Tasks */
+                    return Html::tag('i', '', [
+                        'class' => $model->type->icon
+                    ]);
+                },
+            ],
             'title',
             'status',
             [
@@ -69,10 +107,10 @@ $title = $model->is_template ? Yii::t('app', 'template task') : $this->title;
             ],
 
             [
-                'attribute' => 'create_at',
+                'attribute' => 'created_at',
                 'value' => function($model) {
                     /** @var $model common\models\Tasks */
-                    return Yii::$app->formatter->asDatetime( $model->create_at );
+                    return Yii::$app->formatter->asDatetime( $model->created_at );
                 }
             ],
 

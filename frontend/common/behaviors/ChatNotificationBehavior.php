@@ -5,7 +5,7 @@ namespace frontend\common\behaviors;
 use common\models\Projects;
 use common\models\Tasks;
 use common\models\User;
-use frontend\models\ChatLog;
+use common\models\ChatLog;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 

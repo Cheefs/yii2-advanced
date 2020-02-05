@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $usersList common\models\User[] */
 /* @var $priorityList common\models\User[] */
 /* @var $templatesList common\models\Tasks[] */
+/* @var $typesList \common\models\TaskTypes[] */
 
 $templatesDropDown = ArrayHelper::map( $templatesList, 'id', 'title');
 $templatesDropDown[ -1 ] = Yii::t('app','dont use');
@@ -52,9 +53,7 @@ $templatesDropDown[ -1 ] = Yii::t('app','dont use');
         ]
     )->label('project') ?>
 
-    <?= $form->field($model, 'type')->dropDownList([
-            'task' => 'Task', 'error' => 'Error', 'epic' => 'Epic', 'subtask' => 'Subtask'
-    ], ['class' => 'form-control task__type']) ?>
+    <?= $form->field($model, 'type_id')->dropDownList( $typesList, ['class' => 'form-control task__type']) ?>
 
     <?= $form->field($model, 'priority_id')
         ->dropDownList( $priorityList ?? [], ['class' => 'form-control priority__id'])
@@ -89,9 +88,9 @@ $templatesDropDown[ -1 ] = Yii::t('app','dont use');
      **/
     const setTask = ( template ) => {
         if (!template) return;
-        const { type, priority_id, project_id, execute_user_id, title } = template;
+        const { typeId, priority_id, project_id, execute_user_id, title } = template;
 
-        $taskTypeNode.value = type;
+        $taskTypeNode.value = typeId;
         $taskPriorityNode.value = priority_id;
         $taskProjectNode.value = project_id;
         $taskExecutorNode.value = execute_user_id;

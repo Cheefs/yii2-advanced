@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\helpers\TaskHelper;
+use common\models\TaskTypes;
 use Yii;
 
 use common\models\Priority;
@@ -15,6 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\forms\TaskForm;
 use frontend\common\behaviors\HistoryBehavior;
+use yii\web\Response;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
@@ -81,22 +83,10 @@ class TasksController extends BaseController
     {
         $model = new TaskForm();
 
-        if ($model->load(Yii::$app->request->post()) && TaskHelper::createTask( $model )) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() ) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        $usersList = User::find()->all();
-        $projectsList = Projects::find()->all();
-        $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
-        $templatesList = Tasks::findAll(['is_template' => true ]);
-
-        return $this->render('create', [
-            'model' => $model,
-            'templatesList' => $templatesList,
-            'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
-            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
-            'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
-        ]);
+        return $this->render('update', $this->prepareFormData($model));
     }
 
     /**
@@ -113,18 +103,28 @@ class TasksController extends BaseController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        return $this->render('update', $this->prepareFormData($model));
+    }
+    /**
+     * Вынес логику которая повторяется в редактировании и создании, чтоб не править постоянно в 2х местах
+     * @param $model
+     * @return array
+    */
+    private function prepareFormData( $model ) {
         $usersList = User::find()->all();
         $projectsList = Projects::find()->all();
         $priorityList = Priority::find()->where(['type' => Priority::TYPE_TASK ])->all();
         $templatesList = Tasks::findAll(['is_template' => true ]);
+        $typesList = TaskTypes::find()->all();
 
-        return $this->render('update', [
+        return [
             'model' => $model,
             'templatesList' => $templatesList,
             'priorityList' =>  ArrayHelper::map($priorityList, 'id', 'title'),
             'projectsList' => ArrayHelper::map($projectsList, 'id', 'name'),
-            'usersList' => ArrayHelper::map($usersList, 'id', 'username')
-        ]);
+            'usersList' => ArrayHelper::map($usersList, 'id', 'username'),
+            'typesList' => ArrayHelper::map($typesList, 'id', 'name'),
+        ];
     }
 
     /**
@@ -141,6 +141,21 @@ class TasksController extends BaseController
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    /**
+     * Смена статуса задачи
+     * @param int $id
+     * @param $status string
+     * @return bool|Response
+    */
+    public function actionStatus($id, $status) {
+        $model = Tasks::findOne(['id' => $id ]);
+
+        $model->status = $status;
+        if ( $model->save() ) {
+            return $this->redirect(['view', 'id' => $id ]);
+        }
+        return false;
     }
 
     /**
